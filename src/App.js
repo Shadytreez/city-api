@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import ZipCode from "./zipcode"
 import City from "./city"
 import './App.css';
 class App extends Component{
@@ -13,9 +12,13 @@ class App extends Component{
 
 
   getZipCode = () =>
-  { const cityName = document.getElementById("city").value;
+  { 
+    //turn the name into all Caps and get rid of the spaces between words
+    const cityName = document.getElementById("city").value;
     const upperCase = cityName.toUpperCase();
     const url = "http://ctp-zip-api.herokuapp.com/city/"+upperCase;
+    
+    //fetch url
     fetch(url).
     then(response => response.json()).
     then(responseJson => {
@@ -25,7 +28,7 @@ class App extends Component{
     then(zip => {
       for(let i in this.state.zipCode)
       {
-        
+        //for each zip do another fetch
         fetch("http://ctp-zip-api.herokuapp.com/zip/" +this.state.zipCode[i]).
         then(response => response.json()).
         then(responseJson => {
@@ -33,7 +36,8 @@ class App extends Component{
     }).then(city => {
       for(let j in this.state.cities)
       {
-        var joined = this.state.v.concat(<City city={this.state.cities[j]} zip = {this.state.zipCode[i]}/>);
+        //for each cities add a componment with the zip code
+        var joined = this.state.v.concat(<City city={this.state.cities[j]} zip={this.state.zipCode[i]}/>);
         this.setState({ v: joined });
       } 
     })}})}
