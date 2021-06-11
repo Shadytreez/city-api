@@ -15,7 +15,9 @@ class App extends Component{
   { 
     //turn the name into all Caps and get rid of the spaces between words
     const cityName = document.getElementById("city").value;
-    const upperCase = cityName.toUpperCase();
+    let upperCase = cityName.toUpperCase();
+    upperCase.trim();
+    upperCase = upperCase.replace(/ +/g, "");
     const url = "http://ctp-zip-api.herokuapp.com/city/"+upperCase;
     
     //fetch url
