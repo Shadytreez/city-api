@@ -4,7 +4,7 @@ import './App.css';
 function City(props){
     return(
         <div className="box">
-            <h1>{props.zip}</h1>
+                <h1>{props.zip}</h1>
             <h3>{props.city.LocationText}</h3>
             <ul>
                 <li>State: {props.city.State}</li>
