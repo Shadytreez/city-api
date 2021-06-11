@@ -1,43 +1,62 @@
 import React,{Component} from 'react';
 import ZipCode from "./zipcode"
-
+import City from "./city"
+import './App.css';
 class App extends Component{
   
-  constructor(props)
-  {
-    super(props);
-    this.state={
-      codes:[],
+    
+    state={
+      zipCode:[],
+      cities:[],
+      v: [],
     };
-  }
 
-  getCities()
-  { const city = document.getElementById("city").value;
-    const url = "https://ctp-zip-api.herokuapp.com/city/"+city;
+
+  getZipCode = () =>
+  { const cityName = document.getElementById("city").value;
+    const upperCase = cityName.toUpperCase();
+    const url = "http://ctp-zip-api.herokuapp.com/city/"+upperCase;
     fetch(url).
     then(response => response.json()).
-    then(data => {
-      console.log(data);
-      //this.setState({codes: data});
+    then(responseJson => {
+      console.log(responseJson);
+      this.setState({zipCode: responseJson});
     }).
-    catch(error => console.log("error:"));
+    then(zip => {
+      for(let i in this.state.zipCode)
+      {
+        
+        fetch("http://ctp-zip-api.herokuapp.com/zip/" +this.state.zipCode[i]).
+        then(response => response.json()).
+        then(responseJson => {
+        this.setState({cities: responseJson});
+    }).then(city => {
+      for(let j in this.state.cities)
+      {
+        var joined = this.state.v.concat(<City city={this.state.cities[j]} zip = {this.state.zipCode[i]}/>);
+        this.setState({ v: joined });
+      } 
+    })}})}
     
-  }
+    
+  
+
+  
 
   
 
   render(){
-
-    
+   
 
     return (
-    <div>
+    <div className="content">
       <h1>City Search</h1>
       <form id ="form">
-         <p>City </p> <input id="city" placeholder="newyork" type="text"/>
-         <button type ="button" onClick={this.getCities}> Submit</button>
+         <p>City </p> <input id="city" placeholder="NewYork" type="text"/>
+         <button type ="button" onClick={this.getZipCode}> Submit</button>
        </form>
-       {this.getCityBar}
+        {this.state.v}
+       
     </div>)
   }
 }
