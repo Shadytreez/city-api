@@ -40,7 +40,10 @@ class App extends Component{
         var joined = this.state.v.concat(<City city={this.state.cities[j]} zip={this.state.zipCode[i]}/>);
         this.setState({ v: joined });
       } 
-    })}})}
+    })}}).catch((error) => {
+      alert("not a city");
+    });
+  }
     
     
   
